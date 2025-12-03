@@ -25,9 +25,17 @@ export async function POST(request) {
 
     // Criar sessão
     const cookieStore = await cookies();
+    // Verificar se está em localhost ou HTTP
+    const url = new URL(request.url);
+    const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+    const isHttps = url.protocol === 'https:' || request.headers.get('x-forwarded-proto') === 'https';
+    
+    // Usar secure apenas se estiver em HTTPS e não for localhost
+    const useSecure = !isLocalhost && isHttps;
+    
     cookieStore.set('session', JSON.stringify(result.user), {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: useSecure,
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 dias
       path: '/',
@@ -39,8 +47,9 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error('Erro ao fazer login:', error);
+    console.error('Stack:', error.stack);
     return NextResponse.json(
-      { error: 'Erro ao fazer login' },
+      { error: 'Erro ao fazer login', details: process.env.NODE_ENV === 'development' ? error.message : undefined },
       { status: 500 }
     );
   }

@@ -51,17 +51,22 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (response.ok) {
+        // Aguardar um pouco para garantir que o cookie foi definido
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         // Redirecionar baseado no perfil
-        if (data.user.perfil === 'Administrador') {
-          router.push('/');
+        if (data.user && data.user.perfil === 'Administrador') {
+          window.location.href = '/';
+        } else if (data.user) {
+          window.location.href = '/estoque';
         } else {
-          router.push('/estoque');
+          setError('Erro ao obter dados do usuário');
         }
-        router.refresh();
       } else {
         setError(data.error || 'Erro ao fazer login');
       }
     } catch (error) {
+      console.error('Erro ao fazer login:', error);
       setError('Erro ao fazer login. Tente novamente.');
     } finally {
       setLoading(false);
