@@ -1,0 +1,31 @@
+{
+  "name": "almoxerife",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "init-db": "node scripts/init-db.js",
+    "migrate-recebimentos": "node scripts/migrate-valores-recebimentos.js",
+    "fix-destinatario": "node scripts/fix-destinatario-nullable.js",
+    "add-usuarios": "node scripts/add-usuarios.js",
+    "add-localizacao": "node scripts/add-localizacao-produtos.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^17.2.3",
+    "mysql2": "^3.15.3",
+    "next": "16.0.6",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.6",
+    "tailwindcss": "^4"
+  }
+}
