@@ -176,6 +176,7 @@ npm run add-usuarios               # Adiciona sistema de usuários
 npm run add-localizacao            # Adiciona campos de localização
 npm run migrate-recebimentos       # Migra valores de recebimentos
 npm run fix-destinatario           # Corrige campo destinatario
+npm run add-destinatarios          # Adiciona tabela destinatarios
 
 # Qualidade
 npm run lint         # Executa linter
