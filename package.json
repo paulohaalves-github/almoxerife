@@ -15,8 +15,6 @@
     "add-destinatarios": "node scripts/add-destinatarios.js",
     "add-nota-fiscal-pdf": "node scripts/add-nota-fiscal-pdf.js",
     "add-categoria-fabricante": "node scripts/add-categoria-fabricante.js"
-    
-    
         
   },
   "dependencies": {
