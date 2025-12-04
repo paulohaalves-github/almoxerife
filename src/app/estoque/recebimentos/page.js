@@ -21,6 +21,7 @@ export default function RecebimentosPage() {
     valor_unitario: '',
   });
   const [notaFiscalFile, setNotaFiscalFile] = useState(null);
+  const [uploadingNotaFiscal, setUploadingNotaFiscal] = useState(null);
 
   useEffect(() => {
     carregarDados();
@@ -119,6 +120,40 @@ export default function RecebimentosPage() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleUploadNotaFiscal = async (recebimentoId, file) => {
+    if (!file) {
+      alert('Selecione um arquivo PDF primeiro.');
+      return;
+    }
+
+    setUploadingNotaFiscal(recebimentoId);
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('nota_fiscal_pdf', file);
+
+      const response = await fetch(`/api/recebimentos/${recebimentoId}`, {
+        method: 'PUT',
+        body: formDataToSend,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Nota fiscal adicionada com sucesso!');
+        setUploadingNotaFiscal(null);
+        carregarDados();
+      } else {
+        alert(`Erro: ${data.error}`);
+        setUploadingNotaFiscal(null);
+      }
+    } catch (error) {
+      console.error('Erro ao fazer upload da nota fiscal:', error);
+      alert('Erro ao fazer upload da nota fiscal. Tente novamente.');
+      setUploadingNotaFiscal(null);
+    }
   };
 
   const produtoSelecionado = produtos.find(
@@ -393,6 +428,9 @@ export default function RecebimentosPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     Nota Fiscal
                   </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -430,7 +468,88 @@ export default function RecebimentosPage() {
                         Ver PDF
                       </a>
                     ) : (
-                      <span className="text-zinc-400 dark:text-zinc-500">-</span>
+                      <span className="text-zinc-400 dark:text-zinc-500">Não informada</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    {recebimento.nota_fiscal_pdf ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          id={`nota-fiscal-replace-${recebimento.id}`}
+                          accept=".pdf,application/pdf"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              if (file.size > 10 * 1024 * 1024) {
+                                alert('O arquivo PDF deve ter no máximo 10MB');
+                                e.target.value = '';
+                                return;
+                              }
+                              if (file.type !== 'application/pdf') {
+                                alert('Apenas arquivos PDF são permitidos');
+                                e.target.value = '';
+                                return;
+                              }
+                              if (confirm('Deseja substituir a nota fiscal atual?')) {
+                                handleUploadNotaFiscal(recebimento.id, file);
+                              } else {
+                                e.target.value = '';
+                              }
+                            }
+                          }}
+                          className="hidden"
+                          disabled={uploadingNotaFiscal === recebimento.id}
+                        />
+                        <label
+                          htmlFor={`nota-fiscal-replace-${recebimento.id}`}
+                          className={`inline-flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer border border-blue-300 dark:border-blue-700 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 ${
+                            uploadingNotaFiscal === recebimento.id ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          </svg>
+                          {uploadingNotaFiscal === recebimento.id ? 'Enviando...' : 'Substituir'}
+                        </label>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          id={`nota-fiscal-${recebimento.id}`}
+                          accept=".pdf,application/pdf"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              if (file.size > 10 * 1024 * 1024) {
+                                alert('O arquivo PDF deve ter no máximo 10MB');
+                                e.target.value = '';
+                                return;
+                              }
+                              if (file.type !== 'application/pdf') {
+                                alert('Apenas arquivos PDF são permitidos');
+                                e.target.value = '';
+                                return;
+                              }
+                              handleUploadNotaFiscal(recebimento.id, file);
+                            }
+                          }}
+                          className="hidden"
+                          disabled={uploadingNotaFiscal === recebimento.id}
+                        />
+                        <label
+                          htmlFor={`nota-fiscal-${recebimento.id}`}
+                          className={`inline-flex items-center px-3 py-1 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer border border-blue-300 dark:border-blue-700 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 ${
+                            uploadingNotaFiscal === recebimento.id ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          {uploadingNotaFiscal === recebimento.id ? 'Enviando...' : 'Adicionar PDF'}
+                        </label>
+                      </div>
                     )}
                   </td>
                   </tr>
