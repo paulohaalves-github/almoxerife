@@ -12,7 +12,8 @@
     "fix-destinatario": "node scripts/fix-destinatario-nullable.js",
     "add-usuarios": "node scripts/add-usuarios.js",
     "add-localizacao": "node scripts/add-localizacao-produtos.js",
-    "add-destinatarios": "node scripts/add-destinatarios.js"
+    "add-destinatarios": "node scripts/add-destinatarios.js",
+    "add-nota-fiscal-pdf": "node scripts/add-nota-fiscal-pdf.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

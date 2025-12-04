@@ -177,6 +177,7 @@ npm run add-localizacao            # Adiciona campos de localização
 npm run migrate-recebimentos       # Migra valores de recebimentos
 npm run fix-destinatario           # Corrige campo destinatario
 npm run add-destinatarios          # Adiciona tabela destinatarios
+npm run add-nota-fiscal-pdf        # Adicionando campo nota_fiscal_pdf na tabela recebimentos 
 
 # Qualidade
 npm run lint         # Executa linter
