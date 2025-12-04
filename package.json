@@ -11,7 +11,8 @@
     "migrate-recebimentos": "node scripts/migrate-valores-recebimentos.js",
     "fix-destinatario": "node scripts/fix-destinatario-nullable.js",
     "add-usuarios": "node scripts/add-usuarios.js",
-    "add-localizacao": "node scripts/add-localizacao-produtos.js"
+    "add-localizacao": "node scripts/add-localizacao-produtos.js",
+    "add-destinatarios": "node scripts/add-destinatarios.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

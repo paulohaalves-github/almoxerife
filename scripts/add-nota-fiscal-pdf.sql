@@ -5,3 +5,4 @@ ALTER TABLE recebimentos
 ADD COLUMN nota_fiscal_pdf VARCHAR(500) NULL AFTER observacoes;
 
 
+
