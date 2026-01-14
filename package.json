@@ -15,7 +15,6 @@
     "add-destinatarios": "node scripts/add-destinatarios.js",
     "add-nota-fiscal-pdf": "node scripts/add-nota-fiscal-pdf.js",
     "add-categoria-fabricante": "node scripts/add-categoria-fabricante.js"
-        
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -24,6 +23,7 @@
     "next": "16.0.6",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "recharts": "^3.5.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

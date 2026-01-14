@@ -80,6 +80,12 @@ export default function Header() {
                   {adminMenuOpen && (
                     <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-zinc-800 rounded-md shadow-lg py-1 z-50 border border-zinc-200 dark:border-zinc-700">
                       <Link
+                        href="/administrativo/dashboard"
+                        className="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
                         href="/administrativo/usuarios"
                         className="block px-4 py-2 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
                       >
@@ -166,6 +172,13 @@ export default function Header() {
                   </button>
                   {mobileAdminOpen && (
                     <div className="mt-2 ml-4 space-y-1">
+                      <Link
+                        href="/administrativo/dashboard"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md"
+                      >
+                        Dashboard
+                      </Link>
                       <Link
                         href="/administrativo/usuarios"
                         onClick={() => setMobileMenuOpen(false)}
